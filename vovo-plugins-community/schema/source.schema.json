@@ -113,6 +113,51 @@
     "catalog": {
       "$ref": "#/$defs/listSection"
     },
+    "categories": {
+      "description": "The site's categories (genres, shelves, sections), offered as a filter of the catalog. Either a fixed list, or a request read like the catalog (list + item {id, name}). The chosen category's id is {{category}} in the catalog request (empty while browsing everything); a manifest that declares categories must use {{category}} there.",
+      "oneOf": [
+        {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "#/$defs/category"
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "request",
+            "list",
+            "item"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "request": {
+              "$ref": "#/$defs/request"
+            },
+            "list": {
+              "$ref": "#/$defs/selector"
+            },
+            "item": {
+              "type": "object",
+              "required": [
+                "id",
+                "name"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "$ref": "#/$defs/value"
+                },
+                "name": {
+                  "$ref": "#/$defs/value"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
     "title": {
       "type": "object",
       "required": [
@@ -258,6 +303,12 @@
                   "$ref": "#/$defs/value"
                 }
               }
+            },
+            "referer": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000,
+              "description": "Referer sent with this source's page images (some sites refuse images without it), e.g. \"{{settings.baseUrl}}/\". A template with {{settings.x}} and {{lang}} only; the device sends it only with image requests to the source's allowed hosts, never with anything of vovoscan's."
             }
           }
         },
@@ -326,6 +377,27 @@
         }
       }
     },
+    "category": {
+      "type": "object",
+      "required": [
+        "id",
+        "name"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Sent as {{category}} in the catalog request."
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        }
+      }
+    },
     "request": {
       "type": "object",
       "required": [
@@ -336,7 +408,7 @@
       "properties": {
         "url": {
           "type": "string",
-          "description": "URL template: {{settings.x}}, {{page}}, {{search}}, {{lang}}, {{id}}, {{unitId}}."
+          "description": "URL template: {{settings.x}}, {{page}}, {{search}}, {{category}} (catalog), {{lang}}, {{id}}, {{unitId}}."
         },
         "query": {
           "type": "object",

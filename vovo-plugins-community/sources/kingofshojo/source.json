@@ -3,7 +3,7 @@
   "contractVersion": 1,
   "key": "kingofshojo",
   "name": "Kingofshojo",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Shoujo, romance and fantasy manhwa/manga from kingofshojo.com (WordPress MangaReader theme).",
   "kinds": ["comic"],
   "langs": ["en"],
@@ -11,7 +11,7 @@
   "rateLimit": {"requestsPerMinute": 30},
   "catalog": {
     "request": {
-      "url": "https://kingofshojo.com/page/{{page}}/?s={{search}}",
+      "url": "https://kingofshojo.com/{{category}}page/{{page}}/?s={{search}}",
       "type": "html"
     },
     "list": {"css": "div.bsx"},
@@ -23,6 +23,14 @@
       "status": {"const": "ongoing"}
     },
     "hasNext": {"css": ".pagination a.next", "then": ["notNull"]}
+  },
+  "categories": {
+    "request": {"url": "https://kingofshojo.com/", "type": "html"},
+    "list": {"css": "a[href*=\"/genres/\"]"},
+    "item": {
+      "id": {"css": ":self", "attr": "href", "then": [{"regex": "(genres/[a-z0-9-]+/)"}]},
+      "name": {"css": ":self", "then": ["trim"]}
+    }
   },
   "title": {
     "request": {"url": "https://kingofshojo.com/manga/{{id}}/", "type": "html"},

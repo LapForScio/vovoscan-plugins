@@ -15,6 +15,9 @@ None.
 
 - Catalog/search: `/page/<n>/?s=<query>` (empty `s` = all series, ~490 pages of 10), cards `div.bsx`,
   next page `.pagination a.next`.
+- Categories (1.1.0): the homepage's genre links (`/genres/<slug>/`, 110 of them) feed the catalog
+  filter; a chosen genre reads `/genres/<slug>/page/<n>/` (same card markup), `{{category}}` carries
+  `genres/<slug>/` so the plain browse URL is unchanged when empty.
 - Title: `/manga/<slug>/` — `h1.entry-title`, `div.entry-content-single`, cover `div.thumb img`,
   genres `div.seriestugenre a`, status `td:matches(^Status$) + td`, chapters `#chapterlist li`
   (`data-num`, link `<slug>-chapter-<n>`).

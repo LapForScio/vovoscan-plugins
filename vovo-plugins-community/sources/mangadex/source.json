@@ -3,7 +3,7 @@
   "contractVersion": 1,
   "key": "mangadex",
   "name": "MangaDex",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "MangaDex through its official API (api.mangadex.org): browse and search manga, chapter lists filtered by the device's language, pages served by the at-home network.",
   "kinds": ["comic"],
   "langs": ["en", "fr", "es", "de", "it", "pt", "ru", "ja", "ko", "zh"],
@@ -17,6 +17,7 @@
         "title": "{{search}}",
         "limit": "20",
         "availableTranslatedLanguage[]": "{{lang}}",
+        "includedTags[]": "{{category}}",
         "includes[]": "cover_art"
       },
       "pagination": {"type": "startIndex", "param": "offset", "pageSize": 20, "base": 0}
@@ -29,6 +30,11 @@
     },
     "hasNext": {"path": "$.data[19]", "then": ["notNull"]},
     "total": "$.total"
+  },
+  "categories": {
+    "request": {"url": "https://api.mangadex.org/manga/tag", "type": "json"},
+    "list": "$.data[*]",
+    "item": {"id": "$.id", "name": "$.attributes.name.en"}
   },
   "title": {
     "request": {

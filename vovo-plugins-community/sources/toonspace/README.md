@@ -15,6 +15,10 @@ None.
 
 - **No search**: the site searches client-side only, so the catalog request ignores `{{search}}`;
   searching in the app shows the browse catalog.
+- **No categories**: the site does have genre pages (`/shelf/<slug>`, server-rendered HTML), but the
+  catalog's JSON API (`/api/explore`) ignores every genre/filter parameter (verified: `?genre=action`
+  returns the same feed and cursor as no parameter). The catalog can't switch response shape per
+  category, so no `categories` are declared; revisit if the API grows a filter.
 - The explore API mixes in some video "shorts" items: those titles open with an empty chapter
   list (their content is not comics).
 - The catalog is a cursor-paginated API (`/api/explore`, opaque `nextCursor`); the app engine
