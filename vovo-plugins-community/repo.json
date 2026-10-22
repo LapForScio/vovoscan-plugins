@@ -21,6 +21,31 @@
       "changes": "First draft.\n\n- Catalog (browse + search) through /page/<n>/?s=<query>, titles from /manga/<slug>/,\n  chapter pages from #readerarea img."
     },
     {
+      "key": "mangadex",
+      "name": "MangaDex",
+      "version": "1.0.0",
+      "contractVersion": 1,
+      "kinds": [
+        "comic"
+      ],
+      "langs": [
+        "en",
+        "fr",
+        "es",
+        "de",
+        "it",
+        "pt",
+        "ru",
+        "ja",
+        "ko",
+        "zh"
+      ],
+      "rights": null,
+      "manifest": "sources/mangadex/source.json",
+      "sha256": "c9f5cdc5d303368c8c3899ec4019fa8152a0240d001825b30bfd69255e078b85",
+      "changes": "- Catalog (browse + search) through /manga, availableTranslatedLanguage[] set from the device's language.\n- Titles with cover, description, authors, genres and status.\n- Chapter lists through /chapter (language-filtered, ascending, first 100).\n- Reader pages through /at-home/server/:id with let (baseUrl, hash)."
+    },
+    {
       "key": "toonspace",
       "name": "ToonSpace (toon.free)",
       "version": "1.0.0",

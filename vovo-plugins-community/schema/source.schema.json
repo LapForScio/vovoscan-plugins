@@ -165,6 +165,10 @@
               ],
               "additionalProperties": false,
               "properties": {
+                "request": {
+                  "$ref": "#/$defs/request",
+                  "description": "Fetch a separate list of units (e.g. an API endpoint for chapters); without it, units are read from the title's own response. {{id}} and {{lang}} are available."
+                },
                 "list": {
                   "$ref": "#/$defs/selector"
                 },
@@ -348,6 +352,13 @@
             "xml"
           ],
           "description": "json: parsed as JSON. html: parsed by Ksoup (HTML, no JavaScript). xml: parsed by Ksoup in XML mode (Atom/RSS/OPDS feeds), CSS selectors address elements by local name."
+        },
+        "let": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/value"
+          },
+          "description": "Rules evaluated on the whole response; each result becomes a template variable for this section (e.g. an image host and a chapter hash: {\"base\": \"$.baseUrl\", \"hash\": \"$.chapter.hash\"} used by item rules as {{base}}/{{hash}})."
         },
         "pagination": {
           "oneOf": [
