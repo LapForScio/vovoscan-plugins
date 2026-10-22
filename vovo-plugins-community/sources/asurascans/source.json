@@ -1,0 +1,58 @@
+{
+  "$schema": "../../schema/source.schema.json",
+  "contractVersion": 1,
+  "key": "asurascans",
+  "name": "Asura Scans",
+  "version": "1.0.0",
+  "description": "Manhwa, manga and manhua from Asura Scans, through the site's own JSON API (api.asurascans.com): search and browse the catalog, chapter lists, and page images from their CDN.",
+  "kinds": ["comic"],
+  "langs": ["en"],
+  "hosts": ["api.asurascans.com", "cdn.asurascans.com"],
+  "rateLimit": {"requestsPerMinute": 30},
+  "catalog": {
+    "request": {
+      "url": "https://api.asurascans.com/api/series",
+      "type": "json",
+      "query": {"search": "{{search}}"},
+      "pagination": {"type": "startIndex", "param": "offset", "pageSize": 20, "base": 0}
+    },
+    "list": "$.data[*]",
+    "item": {
+      "id": "$.slug",
+      "name": "$.title",
+      "cover": "$.cover",
+      "kind": {"const": "comic"},
+      "format": "$.type",
+      "status": "$.status"
+    },
+    "hasNext": "$.meta.has_more",
+    "total": "$.meta.total"
+  },
+  "title": {
+    "request": {"url": "https://api.asurascans.com/api/series/{{id}}", "type": "json"},
+    "fields": {
+      "name": "$.series.title",
+      "description": {"path": "$.series.description", "then": [{"regex": "<[^>]+>"}, "collapseSpaces"], "default": ""},
+      "cover": "$.series.cover",
+      "authors": {"path": "$.series.author", "default": ""},
+      "genres": {"path": "$.series.genres[*].name", "all": true},
+      "status": "$.series.status",
+      "format": "$.series.type"
+    },
+    "units": {
+      "request": {"url": "https://api.asurascans.com/api/series/{{id}}/chapters", "type": "json"},
+      "list": "$.data[*]",
+      "item": {
+        "id": {"path": "$.number", "then": ["string"]},
+        "number": {"path": "$.number", "then": ["number"]}
+      }
+    }
+  },
+  "content": {
+    "comic": {
+      "request": {"url": "https://api.asurascans.com/api/series/{{id}}/chapters/{{unitId}}", "type": "json"},
+      "list": "$.data.chapter.pages[*]",
+      "item": {"url": "$.url"}
+    }
+  }
+}

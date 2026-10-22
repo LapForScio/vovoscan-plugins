@@ -5,6 +5,22 @@
   "homepage": "https://github.com/LapForScio/vovoscan-plugins",
   "sources": [
     {
+      "key": "asurascans",
+      "name": "Asura Scans",
+      "version": "1.0.0",
+      "contractVersion": 1,
+      "kinds": [
+        "comic"
+      ],
+      "langs": [
+        "en"
+      ],
+      "rights": null,
+      "manifest": "sources/asurascans/source.json",
+      "sha256": "05775231ac03ef65ecb867bd334dc509aa87bd95a4844689ee64e8cb91f5fee9",
+      "changes": "- Asura Scans through its own JSON API: catalog (/api/series, 20/page, offset pagination, server-side\n  search), title metadata (/api/series/<slug>), chapter lists (/api/series/<slug>/chapters), page\n  URLs (/api/series/<slug>/chapters/<number> → CDN webp images)."
+    },
+    {
       "key": "kingdom-read",
       "name": "Kingdom Read",
       "version": "1.0.0",

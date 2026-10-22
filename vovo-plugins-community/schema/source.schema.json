@@ -110,6 +110,35 @@
         }
       }
     },
+    "ratings": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "How the source rates its titles, for safe mode (an account sees only safe titles until it shows adult content). A title's rating is its contentRating value (catalog item, title fields) through map, else default; anything else is unknown, which safe mode hides.",
+      "properties": {
+        "default": {
+          "enum": [
+            "safe",
+            "suggestive",
+            "erotica",
+            "pornographic"
+          ],
+          "description": "The rating of a title the source gives no value for (a public-domain library: safe)."
+        },
+        "map": {
+          "type": "object",
+          "maxProperties": 32,
+          "description": "The source's own values (compared in lower case) to ours. Values already named safe, suggestive, erotica or pornographic need no entry.",
+          "additionalProperties": {
+            "enum": [
+              "safe",
+              "suggestive",
+              "erotica",
+              "pornographic"
+            ]
+          }
+        }
+      }
+    },
     "catalog": {
       "$ref": "#/$defs/listSection"
     },
@@ -197,6 +226,10 @@
             },
             "format": {
               "$ref": "#/$defs/value"
+            },
+            "contentRating": {
+              "$ref": "#/$defs/value",
+              "description": "The title's rating as the source gives it, read through ratings."
             }
           }
         },
@@ -692,6 +725,10 @@
             },
             "status": {
               "$ref": "#/$defs/value"
+            },
+            "contentRating": {
+              "$ref": "#/$defs/value",
+              "description": "The title's rating as the source gives it, read through ratings."
             }
           }
         },
