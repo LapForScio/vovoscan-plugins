@@ -1,0 +1,45 @@
+{
+  "$schema": "../../schema/source.schema.json",
+  "contractVersion": 1,
+  "key": "kingdom-read",
+  "name": "Kingdom Read",
+  "version": "1.0.0",
+  "description": "Kingdom (Yasuhisa Hara) English scans on kingdom-read.online — a single-series site: the catalog is the series itself, all chapters on one page.",
+  "kinds": ["comic"],
+  "langs": ["en"],
+  "hosts": ["kingdom-read.online"],
+  "rateLimit": {"requestsPerMinute": 30},
+  "catalog": {
+    "request": {"url": "https://kingdom-read.online/", "type": "html"},
+    "list": {"css": "body"},
+    "item": {
+      "id": {"const": "kingdom"},
+      "name": {"css": "h1", "then": ["trim"]},
+      "cover": {"css": "img[src*='wp-content/uploads']", "attr": "src"}
+    }
+  },
+  "title": {
+    "request": {"url": "https://kingdom-read.online/", "type": "html"},
+    "fields": {
+      "name": {"css": "h1", "then": ["trim"]},
+      "description": {"css": "meta[name=description]", "attr": "content"},
+      "cover": {"css": "img[src*='wp-content/uploads']", "attr": "src"},
+      "status": {"const": "ongoing"},
+      "format": {"const": "manga"}
+    },
+    "units": {
+      "list": {"css": "a[href*='/comic/kingdom-chapter-']"},
+      "item": {
+        "id": {"css": ":self", "attr": "href", "then": [{"regex": "/comic/(kingdom-chapter-[0-9-]+)/"}]},
+        "number": {"css": ":self", "attr": "href", "then": [{"regex": "chapter-([0-9]+)"}, "number"]}
+      }
+    }
+  },
+  "content": {
+    "comic": {
+      "request": {"url": "https://kingdom-read.online/comic/{{unitId}}/", "type": "html"},
+      "list": {"css": "img[src*='laiond.com']"},
+      "item": {"url": {"css": ":self", "attr": "src"}}
+    }
+  }
+}

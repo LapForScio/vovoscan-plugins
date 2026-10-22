@@ -5,6 +5,22 @@
   "homepage": "https://github.com/LapForScio/vovoscan-plugins",
   "sources": [
     {
+      "key": "kingdom-read",
+      "name": "Kingdom Read",
+      "version": "1.0.0",
+      "contractVersion": 1,
+      "kinds": [
+        "comic"
+      ],
+      "langs": [
+        "en"
+      ],
+      "rights": null,
+      "manifest": "sources/kingdom-read/source.json",
+      "sha256": "8a6df2cb3be3c57606f6523710c7ee7be8214e49df0345364b8677aa9c722ad5",
+      "changes": "- Kingdom (single-series site): the catalog is the series itself (h1, meta description, cover from\n  the homepage), all chapters (~890, parsed from kingdom-chapter-<n> slugs) as units, reader pages\n  from laiond.com images on each chapter page."
+    },
+    {
       "key": "kingofshojo",
       "name": "Kingofshojo",
       "version": "1.1.0",
