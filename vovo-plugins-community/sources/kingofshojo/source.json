@@ -1,0 +1,56 @@
+{
+  "$schema": "../../schema/source.schema.json",
+  "contractVersion": 1,
+  "key": "kingofshojo",
+  "name": "Kingofshojo",
+  "version": "1.0.0",
+  "description": "Shoujo, romance and fantasy manhwa/manga from kingofshojo.com (WordPress MangaReader theme).",
+  "kinds": ["comic"],
+  "langs": ["en"],
+  "hosts": ["kingofshojo.com", "cdn.kingofshojo.com", "i0.wp.com", "i1.wp.com", "i2.wp.com"],
+  "rateLimit": {"requestsPerMinute": 30},
+  "catalog": {
+    "request": {
+      "url": "https://kingofshojo.com/page/{{page}}/?s={{search}}",
+      "type": "html"
+    },
+    "list": {"css": "div.bsx"},
+    "item": {
+      "id": {"css": "a", "attr": "href", "then": [{"regex": "/manga/([a-z0-9-]+)/"}]},
+      "name": {"css": "a", "attr": "title", "then": ["trim"]},
+      "cover": {"css": "img", "attr": "src", "then": ["absUrl"]},
+      "format": {"const": "manga"},
+      "status": {"const": "ongoing"}
+    },
+    "hasNext": {"css": ".pagination a.next", "then": ["notNull"]}
+  },
+  "title": {
+    "request": {"url": "https://kingofshojo.com/manga/{{id}}/", "type": "html"},
+    "fields": {
+      "name": {"css": "h1.entry-title", "then": ["trim"]},
+      "description": {"css": "div.entry-content-single", "then": ["collapseSpaces"], "default": ""},
+      "cover": {"css": "div.thumb img", "attr": "src", "then": ["absUrl"]},
+      "authors": {"css": "td:matches(^Author$) + td", "then": ["trim", {"map": {"n/a": ""}, "default": ""}]},
+      "genres": {"css": "div.seriestugenre a", "all": true, "then": ["trim"]},
+      "status": {"css": "td:matches(^Status$) + td", "then": ["trim", "lower"]},
+      "format": {"const": "manga"}
+    },
+    "units": {
+      "list": {"css": "#chapterlist li"},
+      "item": {
+        "id": {"css": "a", "attr": "href", "then": [{"regex": "kingofshojo\\.com/([a-z0-9-]+)/$"}]},
+        "number": {"css": ":self", "attr": "data-num", "then": ["number"]},
+        "name": {"css": "span.chapternum", "then": ["trim"]}
+      }
+    }
+  },
+  "content": {
+    "comic": {
+      "request": {"url": "https://kingofshojo.com/{{unitId}}/", "type": "html"},
+      "list": {"css": "#readerarea img"},
+      "item": {
+        "url": {"css": ":self", "attr": "src", "then": ["absUrl"]}
+      }
+    }
+  }
+}

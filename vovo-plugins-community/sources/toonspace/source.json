@@ -1,0 +1,57 @@
+{
+  "$schema": "../../schema/source.schema.json",
+  "contractVersion": 1,
+  "key": "toonspace",
+  "name": "ToonSpace (toon.free)",
+  "version": "1.0.0",
+  "description": "Manga, manhwa, manhua and romance webtoons from toon.free (ToonSpace): catalog from its JSON explore API, chapters read on the site pages.",
+  "kinds": ["comic"],
+  "langs": ["en"],
+  "hosts": ["toon.free", "i1.toonspace.pics"],
+  "rateLimit": {"requestsPerMinute": 30},
+  "catalog": {
+    "request": {
+      "url": "https://toon.free/api/explore",
+      "type": "json",
+      "query": {"cursor": "{{cursor}}"},
+      "pagination": {"type": "cursor", "param": "cursor", "from": {"path": "$.nextCursor"}}
+    },
+    "list": "$.items[*]",
+    "item": {
+      "id": {"path": "$.slug", "then": ["trim"]},
+      "name": {"path": "$.title", "then": ["trim", "collapseSpaces"]},
+      "cover": {"path": "$.coverUrl", "then": ["trim"]},
+      "format": {"const": "manga"},
+      "status": {"const": "ongoing"}
+    }
+  },
+  "title": {
+    "request": {"url": "https://toon.free/title/{{id}}", "type": "html"},
+    "fields": {
+      "name": {"css": "h1", "then": ["trim", "collapseSpaces"]},
+      "description": {"css": "p.line-clamp-3", "then": ["collapseSpaces"], "default": ""},
+      "cover": {"css": "img[src*=\".toonspace.pics/toons/\"]", "attr": "src", "then": ["trim"]},
+      "authors": {"css": "h1 + p", "then": [{"regex": "^by\\s+"}, "trim"], "default": ""},
+      "genres": {"css": "div.flex.flex-wrap.gap-2 a[href^=\"/shelf/\"]", "all": true, "then": ["trim"]},
+      "status": {"css": "span:matches(^(Ongoing|Completed)$)", "then": ["trim", "lower"], "default": "ongoing"},
+      "format": {"const": "manga"}
+    },
+    "units": {
+      "list": {"css": "a[href^=\"/read/\"]"},
+      "item": {
+        "id": {"css": ":self", "attr": "href", "then": [{"regex": "/read/[a-z0-9-]+/(chapter-[0-9]+)"}]},
+        "number": {"css": ":self", "attr": "href", "then": [{"regex": "/read/[a-z0-9-]+/chapter-([0-9]+)"}, "number"]},
+        "name": {"css": ":self", "then": ["trim", "collapseSpaces"]}
+      }
+    }
+  },
+  "content": {
+    "comic": {
+      "request": {"url": "https://toon.free/read/{{id}}/{{unitId}}", "type": "html"},
+      "list": {"css": "img[src*=\"/pages/\"]"},
+      "item": {
+        "url": {"css": ":self", "attr": "src", "then": ["absUrl"]}
+      }
+    }
+  }
+}

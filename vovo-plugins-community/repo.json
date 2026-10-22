@@ -1,0 +1,40 @@
+{
+  "formatVersion": 1,
+  "id": "io.github.lapforscio.community",
+  "name": "vovoscan community sources",
+  "homepage": "https://github.com/LapForScio/vovoscan-plugins",
+  "sources": [
+    {
+      "key": "kingofshojo",
+      "name": "Kingofshojo",
+      "version": "1.0.0",
+      "contractVersion": 1,
+      "kinds": [
+        "comic"
+      ],
+      "langs": [
+        "en"
+      ],
+      "rights": null,
+      "manifest": "sources/kingofshojo/source.json",
+      "sha256": "d0f5acfdca9b27fe7bd34b6174cc231784799a851c67dbf70684e67d15d64b4b",
+      "changes": "First draft.\n\n- Catalog (browse + search) through /page/<n>/?s=<query>, titles from /manga/<slug>/,\n  chapter pages from #readerarea img."
+    },
+    {
+      "key": "toonspace",
+      "name": "ToonSpace (toon.free)",
+      "version": "1.0.0",
+      "contractVersion": 1,
+      "kinds": [
+        "comic"
+      ],
+      "langs": [
+        "en"
+      ],
+      "rights": null,
+      "manifest": "sources/toonspace/source.json",
+      "sha256": "9f03acf0f63b6d2aa77b8dde460e1b8df02cb19780d9fdf3bf603f7e7bb8c15d",
+      "changes": "First draft.\n\n- Catalog from the JSON explore API (/api/explore) with cursor pagination.\n- Titles from /title/<slug>, chapter pages from /read/<slug>/chapter-<n>.\n- No server-side search (the site searches client-side); video \"shorts\" items appear with an\n  empty chapter list."
+    }
+  ]
+}

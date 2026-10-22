@@ -1,0 +1,624 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vovoscan.app/schemas/source/1.json",
+  "title": "vovoscan source manifest",
+  "description": "A content source described by declarative rules: no code execution, only requests to the declared hosts and extractions (JSONPath, CSS) followed by known transformations. Contract version 1. Reference copy: vovoscan-be, src/vovoscan/features/catalog/domain/contract/source.schema.json.",
+  "type": "object",
+  "required": [
+    "contractVersion",
+    "key",
+    "name",
+    "version",
+    "kinds",
+    "langs",
+    "catalog",
+    "title",
+    "content"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "contractVersion": {
+      "const": 1
+    },
+    "key": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{1,62}$",
+      "description": "Stable identifier, in kebab-case. \"vovoscan\" is reserved for the internal source."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 1000
+    },
+    "kinds": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "comic",
+          "book",
+          "audiobook",
+          "video"
+        ]
+      }
+    },
+    "langs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z]{2}$"
+      }
+    },
+    "rights": {
+      "type": "object",
+      "required": [
+        "basis",
+        "notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "basis": {
+          "enum": [
+            "public-domain",
+            "licensed"
+          ],
+          "description": "Claimed rights basis; an admin confirms it on activation (proof required for licensed)."
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 10,
+          "description": "The source's terms: licence, obligations, geographic limits."
+        }
+      }
+    },
+    "settings": {
+      "type": "object",
+      "description": "Settings set by an admin at install time (address of an instance, a mirror…). Usable in templates: {{settings.name}}.",
+      "additionalProperties": {
+        "$ref": "#/$defs/setting"
+      }
+    },
+    "hosts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Fixed hosts allowed in addition to those from url-type settings."
+    },
+    "rateLimit": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "requestsPerMinute": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 600
+        }
+      }
+    },
+    "catalog": {
+      "$ref": "#/$defs/listSection"
+    },
+    "title": {
+      "type": "object",
+      "required": [
+        "request",
+        "fields",
+        "units"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "request": {
+          "$ref": "#/$defs/request"
+        },
+        "fields": {
+          "type": "object",
+          "required": [
+            "name"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "name": {
+              "$ref": "#/$defs/value"
+            },
+            "description": {
+              "$ref": "#/$defs/value"
+            },
+            "cover": {
+              "$ref": "#/$defs/value"
+            },
+            "authors": {
+              "$ref": "#/$defs/value"
+            },
+            "genres": {
+              "$ref": "#/$defs/value"
+            },
+            "status": {
+              "$ref": "#/$defs/value"
+            },
+            "format": {
+              "$ref": "#/$defs/value"
+            }
+          }
+        },
+        "units": {
+          "oneOf": [
+            {
+              "type": "object",
+              "required": [
+                "list",
+                "item"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "list": {
+                  "$ref": "#/$defs/selector"
+                },
+                "item": {
+                  "type": "object",
+                  "required": [
+                    "id"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "$ref": "#/$defs/value"
+                    },
+                    "number": {
+                      "$ref": "#/$defs/value"
+                    },
+                    "name": {
+                      "$ref": "#/$defs/value"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "type": "object",
+              "required": [
+                "single"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "single": {
+                  "type": "object",
+                  "required": [
+                    "id"
+                  ],
+                  "additionalProperties": false,
+                  "description": "The title is read as a single unit (a book in one file).",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": false,
+      "properties": {
+        "comic": {
+          "type": "object",
+          "required": [
+            "request",
+            "list",
+            "item"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "request": {
+              "$ref": "#/$defs/request"
+            },
+            "list": {
+              "$ref": "#/$defs/selector"
+            },
+            "item": {
+              "type": "object",
+              "required": [
+                "url"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "url": {
+                  "$ref": "#/$defs/value"
+                },
+                "width": {
+                  "$ref": "#/$defs/value"
+                },
+                "height": {
+                  "$ref": "#/$defs/value"
+                }
+              }
+            }
+          }
+        },
+        "book": {
+          "type": "object",
+          "required": [
+            "document"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "request": {
+              "$ref": "#/$defs/request"
+            },
+            "document": {
+              "type": "object",
+              "required": [
+                "url",
+                "mediaType"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "url": {
+                  "$ref": "#/$defs/value"
+                },
+                "mediaType": {
+                  "const": "application/epub+zip",
+                  "description": "EPUB only for now: a self-contained file that the reader displays without running scripts."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "setting": {
+      "type": "object",
+      "required": [
+        "label",
+        "type"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "url",
+            "string",
+            "integer"
+          ]
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "default": {
+          "type": [
+            "string",
+            "integer"
+          ]
+        },
+        "help": {
+          "type": "string"
+        }
+      }
+    },
+    "request": {
+      "type": "object",
+      "required": [
+        "url",
+        "type"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "URL template: {{settings.x}}, {{page}}, {{search}}, {{lang}}, {{id}}, {{unitId}}."
+        },
+        "query": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Parameters; an empty value is not sent."
+        },
+        "type": {
+          "enum": [
+            "json",
+            "html",
+            "xml"
+          ],
+          "description": "json: parsed as JSON. html: parsed by Ksoup (HTML, no JavaScript). xml: parsed by Ksoup in XML mode (Atom/RSS/OPDS feeds), CSS selectors address elements by local name."
+        },
+        "pagination": {
+          "oneOf": [
+            {
+              "type": "object",
+              "required": [
+                "type",
+                "param",
+                "pageSize"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "type": {
+                  "const": "startIndex"
+                },
+                "param": {
+                  "type": "string",
+                  "description": "Query parameter carrying the start position, computed from {{page}}."
+                },
+                "pageSize": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "base": {
+                  "type": "integer",
+                  "description": "Start position of page 1 (default 1; an offset base of 0 is expressed with base 0).",
+                  "default": 1
+                }
+              },
+              "description": "startIndex pagination for sources that don't take a page number: the engine sends param = base + (page - 1) * pageSize (never sent for page 1 when it equals base). Only meaningful where {{page}} is available (catalog)."
+            },
+            {
+              "type": "object",
+              "required": [
+                "type",
+                "param",
+                "from"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "type": {
+                  "const": "cursor"
+                },
+                "param": {
+                  "type": "string",
+                  "description": "Query parameter carrying the cursor for the next page."
+                },
+                "from": {
+                  "$ref": "#/$defs/value",
+                  "description": "Rule evaluated on the whole response, extracting the next cursor (e.g. {\"path\": \"$.nextCursor\"}). An empty result means no next page."
+                }
+              },
+              "description": "Cursor pagination: page 1 is the plain request; each next page repeats it with param=<cursor extracted from the previous response>. Only meaningful in the catalog."
+            }
+          ]
+        }
+      }
+    },
+    "selector": {
+      "description": "List of nodes: a JSONPath (\"$.results[*]\") or a CSS selector ({\"css\": \"div.card\"}).",
+      "oneOf": [
+        {
+          "type": "string",
+          "pattern": "^\\$"
+        },
+        {
+          "type": "object",
+          "required": [
+            "css"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "css": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "transform": {
+      "oneOf": [
+        {
+          "enum": [
+            "trim",
+            "string",
+            "number",
+            "integer",
+            "lower",
+            "absUrl",
+            "first",
+            "notNull",
+            "collapseSpaces"
+          ]
+        },
+        {
+          "type": "object",
+          "required": [
+            "regex"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "regex": {
+              "type": "string"
+            },
+            "group": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "replace"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "replace": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "join"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "join": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "map"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "map": {
+              "type": "object"
+            },
+            "default": {}
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "pluck"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "pluck": {
+              "type": "string",
+              "pattern": "^\\$"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "format"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "format": {
+              "type": "string",
+              "description": "Template where {value} is the current value; {{settings.x}} and the variables are substituted too."
+            }
+          }
+        }
+      ]
+    },
+    "value": {
+      "description": "A value: a JSONPath, or a path / css / const / template object, followed by transformations.",
+      "oneOf": [
+        {
+          "type": "string",
+          "pattern": "^\\$"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "path": {
+              "type": "string",
+              "pattern": "^\\$"
+            },
+            "css": {
+              "type": "string"
+            },
+            "attr": {
+              "type": "string",
+              "description": "text (default), html, or an attribute name"
+            },
+            "all": {
+              "type": "boolean",
+              "description": "All matches (a list) rather than the first."
+            },
+            "const": {},
+            "template": {
+              "type": "string"
+            },
+            "then": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/transform"
+              }
+            },
+            "default": {}
+          }
+        }
+      ]
+    },
+    "listSection": {
+      "type": "object",
+      "required": [
+        "request",
+        "list",
+        "item"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "request": {
+          "$ref": "#/$defs/request"
+        },
+        "list": {
+          "$ref": "#/$defs/selector"
+        },
+        "item": {
+          "type": "object",
+          "required": [
+            "id",
+            "name"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "$ref": "#/$defs/value"
+            },
+            "name": {
+              "$ref": "#/$defs/value"
+            },
+            "cover": {
+              "$ref": "#/$defs/value"
+            },
+            "kind": {
+              "$ref": "#/$defs/value"
+            },
+            "format": {
+              "$ref": "#/$defs/value"
+            },
+            "status": {
+              "$ref": "#/$defs/value"
+            }
+          }
+        },
+        "hasNext": {
+          "$ref": "#/$defs/value"
+        },
+        "total": {
+          "$ref": "#/$defs/value"
+        }
+      }
+    }
+  }
+}
