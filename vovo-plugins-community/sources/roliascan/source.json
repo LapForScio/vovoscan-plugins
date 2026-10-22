@@ -1,0 +1,69 @@
+{
+  "$schema": "../../schema/source.schema.json",
+  "contractVersion": 1,
+  "key": "roliascan",
+  "name": "Rolia Scan",
+  "version": "1.0.0",
+  "description": "Manhwa and manga from roliascan.com: the browse/search API the site itself calls (POST), chapter lists from its signed endpoint (signed with the same md5 time token as the site), pages from its storage.",
+  "kinds": ["comic"],
+  "langs": ["en"],
+  "hosts": ["roliascan.com", "roliascan.org"],
+  "rateLimit": {"requestsPerMinute": 30},
+  "catalog": {
+    "request": {
+      "url": "https://roliascan.com/wp-json/manga/v1/load",
+      "type": "json",
+      "method": "post",
+      "contentType": "application/json",
+      "body": "{\"page\": {{page}}, \"search\": \"{{search}}\"}"
+    },
+    "list": "$[*]",
+    "item": {
+      "id": {"path": "$.url", "then": [{"regex": "/manga/([a-z0-9-]+)/"}]},
+      "name": "$.title",
+      "cover": "$.cover",
+      "kind": {"const": "comic"},
+      "format": {"path": "$.type", "then": ["lower"]},
+      "status": {"path": "$.status", "then": ["lower"]}
+    },
+    "hasNext": {"path": "$[23]", "then": ["notNull"]}
+  },
+  "title": {
+    "request": {"url": "https://roliascan.com/manga/{{id}}/", "type": "html"},
+    "let": {"mid": {"css": "[data-manga-id]", "attr": "data-manga-id"}},
+    "fields": {
+      "name": {"css": "h1", "then": ["trim"]},
+      "description": {"css": "meta[name=description]", "attr": "content", "default": ""},
+      "cover": {"css": "img[alt*='Cover']", "attr": "src"},
+      "genres": {"css": "a[href*='/tag/']", "all": true, "then": ["trim"]},
+      "status": {"const": "ongoing"},
+      "format": {"const": "manhwa"}
+    },
+    "units": {
+      "request": {
+        "url": "https://roliascan.com/auth/manga-chapters",
+        "type": "json",
+        "query": {
+          "manga_id": "{{mid}}",
+          "offset": "0",
+          "limit": "500",
+          "order": "asc",
+          "_ts": {"template": "{{unix}}"},
+          "_t": {"template": "{{unix}}mng_ch_{{utc:yyyyMMddHH}}", "then": ["md5", {"regex": "^(.{16}).*$"}]}
+        }
+      },
+      "list": "$.chapters[*]",
+      "item": {
+        "id": "$.id",
+        "number": {"path": "$.chapter", "then": ["number"]}
+      }
+    }
+  },
+  "content": {
+    "comic": {
+      "request": {"url": "https://roliascan.com/auth/chapter-content?chapter_id={{unitId}}", "type": "json"},
+      "list": "$.images[*]",
+      "item": {"url": "$"}
+    }
+  }
+}

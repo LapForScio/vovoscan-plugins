@@ -296,6 +296,13 @@
               }
             }
           ]
+        },
+        "let": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/value"
+          },
+          "description": "Rules evaluated on the title's own response; each result becomes a template variable for the units request and the content rules (e.g. the site's numeric id of the series: {\"mid\": {\"css\": \"[data-manga-id]\", \"attr\": \"data-manga-id\"}})."
         }
       }
     },
@@ -446,9 +453,16 @@
         "query": {
           "type": "object",
           "additionalProperties": {
-            "type": "string"
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/value"
+              }
+            ]
           },
-          "description": "Parameters; an empty value is not sent."
+          "description": "Parameters; an empty value is not sent. A value may be a rule (e.g. a signed token: {\"_t\": {\"template\": \"{{unix}}…\", \"then\": [\"md5\"]}}) evaluated before the request is sent."
         },
         "type": {
           "enum": [
@@ -519,6 +533,23 @@
               "description": "Cursor pagination: page 1 is the plain request; each next page repeats it with param=<cursor extracted from the previous response>. Only meaningful in the catalog."
             }
           ]
+        },
+        "method": {
+          "type": "string",
+          "enum": [
+            "get",
+            "post"
+          ],
+          "default": "get",
+          "description": "post for endpoints that only answer to POST (a browse API, a wp-admin AJAX action). The redirect policy is unchanged; a redirect is followed with GET, as browsers do."
+        },
+        "contentType": {
+          "type": "string",
+          "description": "With method post and body: the Content-Type sent with the body (e.g. application/json). Default: application/x-www-form-urlencoded."
+        },
+        "body": {
+          "type": "string",
+          "description": "With method post: the request body, a template over the same variables as the URL (e.g. a JSON body, or a form body \"action=manga_get_chapters&manga={{id}}\")."
         }
       }
     },
@@ -538,6 +569,11 @@
           "properties": {
             "css": {
               "type": "string"
+            },
+            "path": {
+              "type": "string",
+              "pattern": "^\\$",
+              "description": "With css: the matched element holds JSON (e.g. a script type=\"application/json\" tag); its content is parsed and this JSONPath selects the list nodes."
             }
           }
         }
@@ -553,6 +589,7 @@
             "integer",
             "lower",
             "absUrl",
+            "md5",
             "first",
             "notNull",
             "collapseSpaces"
@@ -680,7 +717,14 @@
                 "$ref": "#/$defs/transform"
               }
             },
-            "default": {}
+            "default": {},
+            "attrs": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "With css: attribute names tried in order, first non-empty wins (lazy-loaded markup where the first node uses src and the rest data-src)."
+            }
           }
         }
       ]

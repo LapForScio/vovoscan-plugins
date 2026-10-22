@@ -1,0 +1,54 @@
+{
+  "$schema": "../../schema/source.schema.json",
+  "contractVersion": 1,
+  "key": "manhuaus",
+  "name": "ManhuaUS",
+  "version": "1.0.0",
+  "description": "Manga, manhwa and manhua from manhuaus.club (WordPress Madara): paginated catalog with server-side search, the full chapter list embedded in each title page, reader images from the site's own uploads.",
+  "kinds": ["comic"],
+  "langs": ["en"],
+  "hosts": ["manhuaus.club"],
+  "rateLimit": {"requestsPerMinute": 30},
+  "catalog": {
+    "request": {
+      "url": "https://manhuaus.club/manga/page/{{page}}/",
+      "type": "html",
+      "query": {"s": "{{search}}", "post_type": "wp-manga"}
+    },
+    "list": {"css": "a.acard"},
+    "item": {
+      "id": {"css": ":self", "attr": "href", "then": [{"regex": "/manga/([a-z0-9]+)/"}]},
+      "name": {"css": ":self", "attr": "title", "then": ["trim"]},
+      "cover": {"css": "img", "attr": "src"},
+      "kind": {"const": "comic"},
+      "status": {"css": ".ac-status", "then": ["trim", "lower"]}
+    },
+    "hasNext": {"css": "a.nextpostslink", "then": ["notNull"]}
+  },
+  "title": {
+    "request": {"url": "https://manhuaus.club/manga/{{id}}/", "type": "html"},
+    "fields": {
+      "name": {"css": "h1.htitle", "then": ["trim"]},
+      "description": {"css": "meta[name=description]", "attr": "content", "default": ""},
+      "cover": {"css": "img.wp-post-image", "attr": "src"},
+      "genres": {"css": "a.chip", "all": true, "then": ["trim"]},
+      "status": {"css": ".htag--status", "then": ["trim", "lower"]},
+      "format": {"const": "manhua"}
+    },
+    "units": {
+      "list": {"css": "script#mk-chapters-data", "path": "$.items[*]"},
+      "item": {
+        "id": {"path": "$.num"},
+        "number": {"path": "$.num", "then": ["number"]},
+        "name": {"path": "$.name"}
+      }
+    }
+  },
+  "content": {
+    "comic": {
+      "request": {"url": "https://manhuaus.club/manga/{{id}}/chapter-{{unitId}}/", "type": "html"},
+      "list": {"css": "img.wp-manga-chapter-img"},
+      "item": {"url": {"css": ":self", "attrs": ["data-src", "src"]}}
+    }
+  }
+}

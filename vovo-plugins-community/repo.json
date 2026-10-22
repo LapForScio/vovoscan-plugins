@@ -78,6 +78,38 @@
       "changes": "- Categories: the catalog filter offers MangaDex's tag list (/manga/tag, all 77 tags as the site names them),\n  sent as includedTags[] together with search and language. Browse without a category is unchanged."
     },
     {
+      "key": "manhuaus",
+      "name": "ManhuaUS",
+      "version": "1.0.0",
+      "contractVersion": 1,
+      "kinds": [
+        "comic"
+      ],
+      "langs": [
+        "en"
+      ],
+      "rights": null,
+      "manifest": "sources/manhuaus/source.json",
+      "sha256": "17e1dc61467f54da25ae1bb630b4de7ec7069a05c1e71ab900637df1336c5c5b",
+      "changes": "- ManhuaUS (WordPress Madara): paginated catalog with server-side search, metadata from the title\n  page, the full chapter list read from the JSON embedded in script#mk-chapters-data, reader\n  images with data-src/src attribute fallback."
+    },
+    {
+      "key": "roliascan",
+      "name": "Rolia Scan",
+      "version": "1.0.0",
+      "contractVersion": 1,
+      "kinds": [
+        "comic"
+      ],
+      "langs": [
+        "en"
+      ],
+      "rights": null,
+      "manifest": "sources/roliascan/source.json",
+      "sha256": "fd0be17c07f48e17671014007a8e7c37cf5d14ca3a9f7027c3b0918b6615808f",
+      "changes": "- Rolia Scan through the site's own endpoints: catalog search via POST /wp-json/manga/v1/load\n  (24/page), title page for metadata and the numeric manga id, chapter lists from the signed\n  /auth/manga-chapters endpoint (md5 time token reproduced with {{unix}}, {{utc:...}} and the\n  md5 transform), pages from /auth/chapter-content (images on roliascan.org)."
+    },
+    {
       "key": "toonspace",
       "name": "ToonSpace (toon.free)",
       "version": "1.0.0",
