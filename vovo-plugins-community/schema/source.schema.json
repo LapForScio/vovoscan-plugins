@@ -250,6 +250,10 @@
                 "list": {
                   "$ref": "#/$defs/selector"
                 },
+                "where": {
+                  "$ref": "#/$defs/value",
+                  "description": "A rule evaluated per listed unit: a falsy result (false, null, empty, 0) drops the unit — e.g. locked or premium chapters the source flags but cannot serve."
+                },
                 "item": {
                   "type": "object",
                   "required": [
@@ -591,6 +595,7 @@
             "absUrl",
             "md5",
             "first",
+            "not",
             "notNull",
             "collapseSpaces"
           ]

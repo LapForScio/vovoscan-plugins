@@ -7,7 +7,7 @@
     {
       "key": "asurascans",
       "name": "Asura Scans",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "contractVersion": 1,
       "kinds": [
         "comic"
@@ -17,8 +17,8 @@
       ],
       "rights": null,
       "manifest": "sources/asurascans/source.json",
-      "sha256": "05775231ac03ef65ecb867bd334dc509aa87bd95a4844689ee64e8cb91f5fee9",
-      "changes": "- Asura Scans through its own JSON API: catalog (/api/series, 20/page, offset pagination, server-side\n  search), title metadata (/api/series/<slug>), chapter lists (/api/series/<slug>/chapters), page\n  URLs (/api/series/<slug>/chapters/<number> → CDN webp images)."
+      "sha256": "d02591b195f467ae9e1263a67658253a0c2bb0feea89275c9634a48fea975645",
+      "changes": "- Premium / early-access chapters (is_premium: true) are no longer listed: the API serves them without\n  pages until the site's own unlock time, which left the reader on an empty chapter. Filtered with\n  units.where + the not transform."
     },
     {
       "key": "kingdom-read",

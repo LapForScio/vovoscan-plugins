@@ -17,7 +17,9 @@ None.
 - Title: `GET /api/series/<slug>` — `$.series` (title, author, HTML description stripped of tags, cover,
   genres, status, type).
 - Units: `GET /api/series/<slug>/chapters` — `$.data[*].number`; the id is the chapter number, used
-  directly in the content URL.
+  directly in the content URL. `is_premium: true` chapters are **not listed** (`units.where`): the API
+  answers them with no pages until the site's own unlock time, so listing them only leads to an empty
+  reader.
 - Chapter: `GET /api/series/<slug>/chapters/<number>` — `$.data.chapter.pages[*].url` on the CDN.
 
 ## Engine features used
@@ -25,11 +27,14 @@ None.
 - `type: "json"` with JSONPath, `let`-free.
 - `startIndex` pagination on `offset` (base 0).
 - Boolean `hasNext` straight from `$.meta.has_more`.
+- `units.where` + the `not` transform: chapters the source flags `is_premium` are dropped from the list.
+
+**Requires a recent app version** (`units.where` and the `not` transform).
 
 ## Limits
 
-- **Premium / early-access chapters answer without a `pages` list** (`is_locked: true`) until the site's
-  unlock time; the reader shows them empty. Free chapters work fully.
+- **Premium / early-access chapters are not listed at all** (they would answer without pages until the
+  site's unlock time).
 - Genres exist on the series but are not exposed as app categories yet.
 - Decimals in chapter numbers (e.g. `35.5`) have not been observed; if they appear, the units id is the
   raw number as sent by the API.
