@@ -15,11 +15,12 @@ None.
   chapter slug, the number is parsed from `chapter-<n>`. The site lists one duplicate (`…-887-2`);
   the engine keeps the first of two equal numbers.
 - Chapter: `/comic/kingdom-chapter-<n>/` — pages are `<img lazyload src="https://laiond.com/…">`
-  (18–57 per chapter), hotlink-friendly (plain GET, no Referer).
+  (18–57 per chapter), hotlink-friendly (plain GET, no Referer). Re-checked 2026-11-04 (chapter 891):
+  still `img[lazyload]` on `laiond.com`, plain GET returns 200 `image/jpeg`.
 
 ## Limits
 
 - Single series: search always returns the one item; there are no categories.
 - Chapter parts sharing a number (e.g. `887` and `887-2`) collapse to the first.
-- Images live on `laiond.com`; the engine's rules never call it (allowed hosts only gate the app's
-  own requests), and the app image loader fetches it with a plain GET.
+- Images live on `laiond.com`; it must stay listed in `hosts` because the engine's destination guard
+  checks image URLs too when pages are fetched server-side (`SourceRejected` otherwise).

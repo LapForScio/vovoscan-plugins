@@ -3,11 +3,11 @@
   "contractVersion": 1,
   "key": "kingdom-read",
   "name": "Kingdom Read",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Kingdom (Yasuhisa Hara) English scans on kingdom-read.online — a single-series site: the catalog is the series itself, all chapters on one page.",
   "kinds": ["comic"],
   "langs": ["en"],
-  "hosts": ["kingdom-read.online"],
+  "hosts": ["kingdom-read.online", "laiond.com"],
   "rateLimit": {"requestsPerMinute": 30},
   "catalog": {
     "request": {"url": "https://kingdom-read.online/", "type": "html"},

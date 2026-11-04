@@ -23,7 +23,7 @@
     {
       "key": "kingdom-read",
       "name": "Kingdom Read",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "contractVersion": 1,
       "kinds": [
         "comic"
@@ -33,8 +33,8 @@
       ],
       "rights": null,
       "manifest": "sources/kingdom-read/source.json",
-      "sha256": "8a6df2cb3be3c57606f6523710c7ee7be8214e49df0345364b8677aa9c722ad5",
-      "changes": "- Kingdom (single-series site): the catalog is the series itself (h1, meta description, cover from\n  the homepage), all chapters (~890, parsed from kingdom-chapter-<n> slugs) as units, reader pages\n  from laiond.com images on each chapter page."
+      "sha256": "91731ab1edd5f01fb44e917a54adabe271c6911327cd57ab9b464bc7dc332b01",
+      "changes": "- Add laiond.com (the chapter image host) to hosts: the engine's destination guard rejects\n  chapter images otherwise (SourceRejected: address not allowed), even though the site itself\n  hotlink-friendly serves them."
     },
     {
       "key": "kingofshojo",
