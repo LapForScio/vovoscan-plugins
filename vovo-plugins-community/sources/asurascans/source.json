@@ -3,7 +3,7 @@
   "contractVersion": 1,
   "key": "asurascans",
   "name": "Asura Scans",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Manhwa, manga and manhua from Asura Scans, through the site's own JSON API (api.asurascans.com): search and browse the catalog, chapter lists (premium chapters are not listed), and page images from their CDN.",
   "kinds": ["comic"],
   "langs": ["en"],
@@ -45,7 +45,9 @@
       "where": {"path": "$.is_premium", "then": ["not"]},
       "item": {
         "id": {"path": "$.number", "then": ["string"]},
-        "number": {"path": "$.number", "then": ["number"]}
+        "number": {"path": "$.number", "then": ["number"]},
+        "name": "$.title",
+        "date": "$.published_at"
       }
     }
   },

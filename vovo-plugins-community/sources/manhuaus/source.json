@@ -3,7 +3,7 @@
   "contractVersion": 1,
   "key": "manhuaus",
   "name": "ManhuaUS",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Manga, manhwa and manhua from manhuaus.club (WordPress Madara): paginated catalog with server-side search, the full chapter list embedded in each title page, reader images from the site's own uploads.",
   "kinds": ["comic"],
   "langs": ["en"],
@@ -40,7 +40,8 @@
       "item": {
         "id": {"path": "$.num"},
         "number": {"path": "$.num", "then": ["number"]},
-        "name": {"path": "$.name"}
+        "name": {"path": "$.name"},
+        "date": {"path": "$.ago"}
       }
     }
   },

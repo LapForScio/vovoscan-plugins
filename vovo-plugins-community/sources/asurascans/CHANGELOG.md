@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.0
+
+- Chapters carry their name (`title`) and when they came out (`published_at`, `units.item.date`), so
+  readers see each chapter's title and date and which source is up to date.
+
 ## 1.1.0
 
 - Premium / early-access chapters (`is_premium: true`) are no longer listed: the API serves them without

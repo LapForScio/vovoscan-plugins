@@ -269,6 +269,10 @@
                     },
                     "name": {
                       "$ref": "#/$defs/value"
+                    },
+                    "date": {
+                      "$ref": "#/$defs/value",
+                      "description": "When the unit came out at the source: an ISO 8601 date or time, a Unix time (seconds or milliseconds), an English date (\"November 2, 2026\", \"2 Nov 2026\") or an English relative time (\"2 days ago\", \"yesterday\"). Read as a UTC instant; anything else is no date."
                     }
                   }
                 }

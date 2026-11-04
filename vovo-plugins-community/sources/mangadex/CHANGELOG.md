@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.0
+
+- Chapters carry when they came out (`attributes.publishAt`, `units.item.date`).
+
 ## 1.1.0
 
 - Categories: the catalog filter offers MangaDex's tag list (`/manga/tag`, all 77 tags as the site names them),
