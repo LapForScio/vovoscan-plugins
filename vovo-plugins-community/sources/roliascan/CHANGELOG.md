@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0
+
+- Chapters carry when they came out (`date`, written like "14 hours ago"; `units.item.date`).
+
 ## 1.0.0
 
 - Rolia Scan through the site's own endpoints: catalog search via `POST /wp-json/manga/v1/load`
