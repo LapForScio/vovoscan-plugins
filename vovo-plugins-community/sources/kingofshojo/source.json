@@ -3,7 +3,7 @@
   "contractVersion": 1,
   "key": "kingofshojo",
   "name": "Kingofshojo",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Shoujo, romance and fantasy manhwa/manga from kingofshojo.com (WordPress MangaReader theme).",
   "kinds": ["comic"],
   "langs": ["en"],
@@ -48,7 +48,8 @@
       "item": {
         "id": {"css": "a", "attr": "href", "then": [{"regex": "kingofshojo\\.com/([a-z0-9-]+)/$"}]},
         "number": {"css": ":self", "attr": "data-num", "then": ["number"]},
-        "name": {"css": "span.chapternum", "then": ["trim"]}
+        "name": {"css": "span.chapternum", "then": ["trim"]},
+        "date": {"css": "span.chapterdate", "then": ["trim"]}
       }
     }
   },

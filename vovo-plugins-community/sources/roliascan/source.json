@@ -3,7 +3,7 @@
   "contractVersion": 1,
   "key": "roliascan",
   "name": "Rolia Scan",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Manhwa and manga from roliascan.com: the browse/search API the site itself calls (POST), chapter lists from its signed endpoint (signed with the same md5 time token as the site), pages from its storage.",
   "kinds": ["comic"],
   "langs": ["en"],
@@ -55,7 +55,8 @@
       "list": "$.chapters[*]",
       "item": {
         "id": "$.id",
-        "number": {"path": "$.chapter", "then": ["number"]}
+        "number": {"path": "$.chapter", "then": ["number"]},
+        "date": "$.date"
       }
     }
   },

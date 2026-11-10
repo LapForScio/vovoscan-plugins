@@ -7,7 +7,7 @@
     {
       "key": "asurascans",
       "name": "Asura Scans",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "contractVersion": 1,
       "kinds": [
         "comic"
@@ -17,8 +17,8 @@
       ],
       "rights": null,
       "manifest": "sources/asurascans/source.json",
-      "sha256": "d02591b195f467ae9e1263a67658253a0c2bb0feea89275c9634a48fea975645",
-      "changes": "- Premium / early-access chapters (is_premium: true) are no longer listed: the API serves them without\n  pages until the site's own unlock time, which left the reader on an empty chapter. Filtered with\n  units.where + the not transform."
+      "sha256": "fd267ca552df17d4723c0eaf510819ac5597c94153e071c306de36c21e86eb5d",
+      "changes": "- Chapters carry their name (title) and when they came out (published_at, units.item.date), so\n  readers see each chapter's title and date and which source is up to date."
     },
     {
       "key": "kingdom-read",
@@ -39,7 +39,7 @@
     {
       "key": "kingofshojo",
       "name": "Kingofshojo",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "contractVersion": 1,
       "kinds": [
         "comic"
@@ -49,13 +49,13 @@
       ],
       "rights": null,
       "manifest": "sources/kingofshojo/source.json",
-      "sha256": "e60cd92aa99290da8103de37927a08b4023b1e96b96cf579bb4d305c59d57a47",
-      "changes": "- Categories: the catalog filter lists the site's genres (110, read from the homepage's /genres/<slug>/\n  links). A chosen genre switches the catalog to /genres/<slug>/page/<n>/; browsing everything is unchanged."
+      "sha256": "f5580ce6e6c91815ced00713da7fb82916be611e21dd6c0edf311ba34edd3114",
+      "changes": "- Chapters carry when they came out (span.chapterdate, \"November 4, 2026\"; units.item.date)."
     },
     {
       "key": "mangadex",
       "name": "MangaDex",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "contractVersion": 1,
       "kinds": [
         "comic"
@@ -74,13 +74,13 @@
       ],
       "rights": null,
       "manifest": "sources/mangadex/source.json",
-      "sha256": "20133d1d28727c2b077cc0d8e61f8ed55f1d3160bf84cf47e9e4f33ce7a2c27d",
-      "changes": "- Categories: the catalog filter offers MangaDex's tag list (/manga/tag, all 77 tags as the site names them),\n  sent as includedTags[] together with search and language. Browse without a category is unchanged."
+      "sha256": "1cd06268e1176b7325a5571d53f33e097741002655380b31d0f69e57a0cbf2a1",
+      "changes": "- Chapters carry when they came out (attributes.publishAt, units.item.date)."
     },
     {
       "key": "manhuaus",
       "name": "ManhuaUS",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "contractVersion": 1,
       "kinds": [
         "comic"
@@ -90,13 +90,13 @@
       ],
       "rights": null,
       "manifest": "sources/manhuaus/source.json",
-      "sha256": "17e1dc61467f54da25ae1bb630b4de7ec7069a05c1e71ab900637df1336c5c5b",
-      "changes": "- ManhuaUS (WordPress Madara): paginated catalog with server-side search, metadata from the title\n  page, the full chapter list read from the JSON embedded in script#mk-chapters-data, reader\n  images with data-src/src attribute fallback."
+      "sha256": "05c1c5eb690933039fd4c233e3bb298af819e0ad4e24f0f712d80925a1dbc501",
+      "changes": "- Chapters carry when they came out (ago: \"13 minutes ago\", or a date like \"February 24, 2026\";\n  units.item.date)."
     },
     {
       "key": "roliascan",
       "name": "Rolia Scan",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "contractVersion": 1,
       "kinds": [
         "comic"
@@ -106,8 +106,8 @@
       ],
       "rights": null,
       "manifest": "sources/roliascan/source.json",
-      "sha256": "fd0be17c07f48e17671014007a8e7c37cf5d14ca3a9f7027c3b0918b6615808f",
-      "changes": "- Rolia Scan through the site's own endpoints: catalog search via POST /wp-json/manga/v1/load\n  (24/page), title page for metadata and the numeric manga id, chapter lists from the signed\n  /auth/manga-chapters endpoint (md5 time token reproduced with {{unix}}, {{utc:...}} and the\n  md5 transform), pages from /auth/chapter-content (images on roliascan.org)."
+      "sha256": "d384c7b4af7f54da6ddc10e36f63fb69fa0ff5fbc0b6829d6ff29292bcb465ee",
+      "changes": "- Chapters carry when they came out (date, written like \"14 hours ago\"; units.item.date)."
     },
     {
       "key": "toonspace",
